@@ -1,8 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import md5 from 'md5';
+import CryptoJS from 'crypto-js';
 
 const API_URL = 'http://api.valantis.store:40000/';
-const PASSWORD = 'password_20240307';
+const PASSWORD = 'Valantis';
+const timestamp = new Date().toISOString().slice(0, 10).split('-').join('');
+const data = `${PASSWORD}_${timestamp}`;
+
+const authorizationString = CryptoJS.MD5(data).toString();
+
+export const getStore = async () => {
+    try {
+        const response = await fetch("http://api.valantis.store:40000/", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Auth': authorizationString },
+            body: JSON.stringify({ action: 'get_ids' }),
+        });
+
+        if (!response.ok) {
+            console.error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
+    return null;
+};
 
 const calculateXAuth = () => {
     const timestamp = new Date().toISOString().split('T')[0].replace(/-/g, '');
@@ -18,16 +44,18 @@ const ProductList = () => {
     const fetchProducts = async () => {
         try {
             const xAuth = calculateXAuth();
+            const filterParams = {
+                action: 'filter',
+                params: { ...filter },
+            };
+
             const response = await fetch(`${API_URL}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Auth': xAuth,
                 },
-                body: JSON.stringify({
-                    action: 'get_ids',
-                    params: { offset: (currentPage - 1) * 50, limit: 50 },
-                }),
+                body: JSON.stringify(filterParams),
             });
 
             if (!response.ok) {
@@ -104,7 +132,7 @@ const ProductList = () => {
 
     return (
         <div>
-            <h1>Product List</h1>
+            <h1>Список товаров</h1>
             <div>
                 <label htmlFor="filterName">Название:</label>
                 <input
@@ -132,6 +160,7 @@ const ProductList = () => {
                     onChange={(e) => handleFilterChange('brand', e.target.value)}
                 />
             </div>
+            <button onClick={fetchProducts}>Поиск</button>
             <ul>
                 {products.map((product) => (
                     <li key={product.id}>
