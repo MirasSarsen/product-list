@@ -1,0 +1,27 @@
+From 74991a3ffd30fd7d29d5da06b707bd797dadcc14 Mon Sep 17 00:00:00 2001
+From: Miras Sarsen <miras.frontender@gmail.com>
+Date: Sat, 9 Mar 2024 21:27:09 +0500
+Subject: [PATCH] =?UTF-8?q?=D0=B8=D0=B7=D0=BC=D0=B5=D0=BD=D0=B8=D0=BB=20pa?=
+ =?UTF-8?q?ckage=20json?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ package.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/package.json b/package.json
+index f229a45..931012d 100644
+--- a/package.json
++++ b/package.json
+@@ -1,5 +1,5 @@
+ {
+-  "homepage": "http://mirassarsen.github.io/product-list-react",
++  "homepage": "https://mirassarsen.github.io/ProductList",
+   "name": "product-list-app",
+   "version": "0.1.0",
+   "private": true,
+-- 
+2.43.0.windows.1
+
